@@ -45,15 +45,12 @@ def main():
     # Предсказания делаются отдельно для каждого диалога, в том числе для одного ucid
     df["processed"] = df["text_employer"].apply(process_string)
 
-    if "ACTION_ITEM_RESULT_PRODUCT_NAME" in df.columns:
-        df["pred"] = model.predict(df["ACTION_ITEM_RESULT_PRODUCT_NAME"])
-    else:
-        df["pred"] = model.predict(df["category"])
+    df["pred"] = model.predict(df["processed"])
 
     df = df.drop(["processed"], axis=1)
     output_csv_path = os.path.splitext(args.csv_path)[0] + "_out.csv"
     df.to_csv(output_csv_path)
-    print("Успешно результат сохранен в", output_csv_path)
+    print("Результат успешно сохранен в", output_csv_path)
 
 
 if __name__ == "__main__":
